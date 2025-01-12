@@ -29,5 +29,9 @@ export function ensureAuthenticated(
         request.user = {
             id: user_id,
         }
-    } catch (error) {}
+
+        next()
+    } catch (error) {
+        throw new AppError('JWT informado é inválido', 401)
+    }
 }

@@ -20,6 +20,7 @@ model User {
     password  String
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @default(now()) @map("updated_at")
+    Book      Book[]
 
     @@map("users")
 }
@@ -27,24 +28,15 @@ model User {
 model Book {
     id            String   @id @default(uuid())
     title         String
+    user_id       String
     author        String
+    gender        String
     year          Int
     numberOfPages Int      @map("number_of_pages")
     createdAt     DateTime @default(now()) @map("created_at")
     upadtedAt     DateTime @updatedAt @map("updated_at")
 
-    Gender Gender[]
+    user User @relation(fields: [user_id], references: [id])
 
     @@map("books")
-}
-
-model Gender {
-    id        String   @id @default(uuid())
-    name      String
-    book_id   String
-    createdAt DateTime @default(now())
-
-    book Book @relation(fields: [book_id], references: [id])
-
-    @@map("genders")
 }
