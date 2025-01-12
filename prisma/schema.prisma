@@ -23,3 +23,28 @@ model User {
 
     @@map("users")
 }
+
+model Book {
+    id            String   @id @default(uuid())
+    title         String
+    author        String
+    year          Int
+    numberOfPages Int      @map("number_of_pages")
+    createdAt     DateTime @default(now()) @map("created_at")
+    upadtedAt     DateTime @updatedAt @map("updated_at")
+
+    Gender Gender[]
+
+    @@map("books")
+}
+
+model Gender {
+    id        String   @id @default(uuid())
+    name      String
+    book_id   String
+    createdAt DateTime @default(now())
+
+    book Book @relation(fields: [book_id], references: [id])
+
+    @@map("genders")
+}
