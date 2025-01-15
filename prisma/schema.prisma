@@ -33,6 +33,7 @@ model Book {
     gender        String
     year          Int
     numberOfPages Int      @map("number_of_pages")
+    readedPages   Int      @default(0) @map("readed_pages")
     createdAt     DateTime @default(now()) @map("created_at")
     upadtedAt     DateTime @updatedAt @map("updated_at")
 
