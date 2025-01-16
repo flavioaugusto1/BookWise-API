@@ -10,10 +10,11 @@ export class BooksController {
             author: z.string(),
             gender: z.string(),
             year: z.number().int(),
+            readedPages: z.number().int().min(0),
             numberOfPages: z.number().int(),
         })
 
-        const { title, author, gender, year, numberOfPages } =
+        const { title, author, gender, year, readedPages, numberOfPages } =
             requestBodySchema.parse(request.body)
 
         const { id: user_id } = request.user
@@ -24,6 +25,7 @@ export class BooksController {
                 author,
                 gender,
                 year,
+                readedPages,
                 numberOfPages,
                 user_id,
             },

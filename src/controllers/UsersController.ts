@@ -38,4 +38,32 @@ export class UsersController {
 
         response.status(201).json({ user: userWihtoutPassowrd })
     }
+
+    async getTotalPagesReaded(request: Request, response: Response) {
+        const { id: userId } = request.user
+        console.log(userId)
+
+        const book = await prisma.book.findMany({
+            where: {
+                user_id: userId,
+            },
+        })
+
+        if (!book) {
+            throw new AppError(
+                'Não foi possível localizar livros no seu cadastro',
+                404,
+            )
+        }
+
+        const totalPagesReaded = book.reduce(
+            (accumulator, currentValue) =>
+                accumulator + currentValue.readedPages,
+            0,
+        )
+
+        response.json({
+            totalPagesReaded,
+        })
+    }
 }

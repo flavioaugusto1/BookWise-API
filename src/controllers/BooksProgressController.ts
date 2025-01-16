@@ -87,4 +87,33 @@ export class BooksProgressController {
             message: `Você leu ${readedPages} páginas de ${numberOfPages}. Seu progresso no livro é de ${percentBookReaded}%.`,
         })
     }
+
+    async getStats(request: Request, response: Response) {
+        const { id: userId } = request.user
+
+        const book = await prisma.book.findMany({
+            where: {
+                user_id: userId,
+            },
+        })
+
+        if (!book) {
+            throw new AppError(
+                'Não foi possível localizar livros no seu cadastro',
+                404,
+            )
+        }
+
+        const quantityBooks = book.length
+
+        const totalBooksEnded = book.filter((book) => {
+            return book.readedPages >= book.numberOfPages
+        }).length
+
+        const percentBooksEnded = Number(
+            ((totalBooksEnded / quantityBooks) * 100).toFixed(2),
+        )
+
+        response.json({ quantityBooks, totalBooksEnded, percentBooksEnded })
+    }
 }

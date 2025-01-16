@@ -10,14 +10,17 @@ const booksProgressController = new BooksProgressController()
 const reviewsBooksController = new ReviewsBooksController()
 
 booksRoute.use(ensureAuthenticated)
-booksRoute.post('/', booksController.create)
+
 booksRoute.get('/', booksController.index)
+booksRoute.get('/stats', booksProgressController.getStats)
 booksRoute.get('/:id', booksController.show)
+booksRoute.get('/:id/progress', booksProgressController.show)
+booksRoute.get('/:id/review', reviewsBooksController.show)
+
 booksRoute.put('/:id', booksController.update)
+booksRoute.patch('/:id/progress', booksProgressController.update)
+
 booksRoute.delete('/:id', booksController.delete)
 
-booksRoute.patch('/:id/progress', booksProgressController.update)
-booksRoute.get('/:id/progress', booksProgressController.show)
-
+booksRoute.post('/', booksController.create)
 booksRoute.post('/:id/review', reviewsBooksController.create)
-booksRoute.get('/:id/review', reviewsBooksController.show)
