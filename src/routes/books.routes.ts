@@ -20,3 +20,4 @@ booksRoute.patch('/:id/progress', booksProgressController.update)
 booksRoute.get('/:id/progress', booksProgressController.show)
 
 booksRoute.post('/:id/review', reviewsBooksController.create)
+booksRoute.get('/:id/review', reviewsBooksController.show)

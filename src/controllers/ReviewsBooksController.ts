@@ -45,5 +45,33 @@ export class ReviewsBooksController {
         })
     }
 
-    async show(request: Request, response: Response) {}
+    async show(request: Request, response: Response) {
+        const requestParamSchema = z.object({
+            id: z.string().uuid(),
+        })
+
+        const { id } = requestParamSchema.parse(request.params)
+        const { id: user_id } = request.user
+
+        const book = await prisma.book.findFirst({
+            where: {
+                id,
+            },
+        })
+
+        if (!book || book.user_id !== user_id) {
+            throw new AppError(
+                'Não foi possível localizar o livro informado.',
+                404,
+            )
+        }
+
+        const reviews = await prisma.review.findMany({
+            where: {
+                book_id: id,
+            },
+        })
+
+        response.json({ reviews })
+    }
 }
