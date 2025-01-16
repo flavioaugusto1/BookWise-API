@@ -62,6 +62,17 @@ export class BooksController {
                 id,
                 user_id,
             },
+            include: {
+                Review: {
+                    select: {
+                        id: true,
+                        grade: true,
+                        user_id: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    },
+                },
+            },
         })
 
         if (!book) {
