@@ -35,9 +35,19 @@ export class BooksController {
     }
 
     async index(request: Request, response: Response) {
+        const requestQuerySchema = z.object({
+            page: z.coerce.number().int().min(1).optional(),
+        })
+
+        const { page } = requestQuerySchema.parse(request.query)
+
         const { id: user_id } = request.user
 
+        const skipItems = !page || page === 1 ? 0 : 5 * page - 5
+
         const books = await prisma.book.findMany({
+            skip: skipItems,
+            take: 5,
             where: {
                 user_id,
             },
